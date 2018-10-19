@@ -32,6 +32,7 @@ app.use(bodyParser.urlencoded({
 //app.use('/users', usersRouter);
 
 var error = 0;
+var currentStatus = "hella";
 
 app.get("/dashboard", function(req, res) {
     if (req.session.uid)
@@ -47,6 +48,18 @@ app.get("/dashboard", function(req, res) {
                 throw err;
             }
             obj = result;
+            
+            
+             obj[0].courses.forEach(function(obj) {
+            if(obj.status!="done"){
+                var inTime = obj.dateOfEnrollment;
+                var currTime = Math.floor(Date.now()/1000);
+                var diff = Math.floor((currTime-inTime)/(60*60*24));
+                obj.perc = Math.floor(((diff)/7)*100);
+            }
+             });
+            
+            
             db.close();
              res.render('dashboard',{obj: obj,uname: req.session.uid,pageHeading: "DASHBOARD"});
         });
@@ -72,7 +85,8 @@ app.get("/courses", function(req, res) {
             obj = result;
              
             db.close();
-             res.render('courses',{obj: obj,uname: req.session.uid,pageHeading: "ALL COURSES"});
+             res.render('courses',{obj: obj,uname: req.session.uid,pageHeading: "ALL COURSES",currentStatus: currentStatus});
+            currentStatus = "";
         });
     });       
     }
@@ -243,6 +257,42 @@ app.post("/login", function(req, res) {
         });
     });
 
+});
+
+app.post('/addCourse',function(req,response){
+    var cid = req.body.cid;
+    var cname = req.body.cname;
+    var uid = req.session.uid;
+    var time = Math.floor(Date.now()/1000);
+    var courseToAdd = {
+            courseId: cid,
+            courseName: cname,
+            dateOfEnrollment: time,
+            status: "START",
+            quiz: "no"
+        };
+    //add to database here and redirect to courses page
+    MongoClient.connect(url, function(err, db) {
+        if (err) throw err;
+        var dbo = db.db("codeit");
+        var myquery = { username: uid };
+        var newvalues = { $push:{courses: courseToAdd}};
+        dbo.collection("users").findOne({$and:[{username: uid},{"courses.courseId" : cid}]},function(err,result){
+            if(!result){
+                dbo.collection("users").updateOne(myquery, newvalues, function(err, res) {
+                    if (err) throw err;
+                    db.close();
+                    currentStatus = "DONE";
+                    response.redirect('courses');
+                });
+            }
+            else
+                {
+                     currentStatus = "ALREADY";
+                     response.redirect('courses');
+                }
+        });
+    });
 });
 
 

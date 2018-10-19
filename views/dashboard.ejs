@@ -9,7 +9,7 @@
                     
                     <%if(obj[0].courses.length==0){%>
                         <h1 style="text-align: center;">NO COURSES REGISTRED</h1>
-                        <center><button class="btn btn-primary" style="margin: 0 auto;">REGISTER COURSE</button></center>
+                        <center><a href="./courses" class="btn btn-primary" style="margin: 0 auto;">REGISTER COURSE</a></center>
                     <%}
                      else{%>
                      
@@ -19,8 +19,8 @@
                      <li class="list-group-item"><%= obj.courseName %> <span class="badge"><%= obj.status %></span>
                     <br><br>
                     <div class="progress yellow">
-                        <div class="progress-bar progress-bar-success progress-bar-striped active" style="width:65%;">
-                        <div class="progress-value">65%</div>
+                        <div class="progress-bar progress-bar-success progress-bar-striped active" style="width:<%= obj.perc %>%;">
+                        <div class="progress-value" style="color: black; text-align: center;"><%= obj.perc %></div>
                         </div>
                     </div>
                     <div><center>PRACTICE <span class="glyphicon glyphicon-road"></span></center></div>
