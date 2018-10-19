@@ -1,5 +1,9 @@
 1. Add videos
 2. Reference page
-3. enroll courses
+3. course page customized + opening page
 4. chat room
 5. register course button
+6. follow other users
+7. week wise content
+8. Embed quiz + After finishing quizes course moves to comleted.
+9. Practice Arena Embed.
