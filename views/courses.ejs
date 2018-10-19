@@ -1,5 +1,15 @@
 <%- include includes/navbar.ejs %>
     <h1>ALL COURSES</h1>
+    <%if(currentStatus=="ALREADY"){%>
+              <script type="text/javascript">
+                swal("ALERT", "ALREADY ENROLLED FOR THE COURSE", "info");
+              </script>
+    <%}%>
+    <%if(currentStatus=="DONE"){%>
+              <script type="text/javascript">
+                swal("SUCCESS", "ENROLLED FOR THE COURSE", "success");
+              </script>
+    <%}%>
     <div class="container-fluid">
         <div class="row">
           
@@ -20,7 +30,11 @@
                         <p>course description - <%= obj.shortDesc %></p>
                         <br><br>
                         <button type="button" class="btn btn-success" data-toggle="collapse" data-target="#<%= obj.courseId %>">ABOUT COURSE</button>
-                        <span class="btn btn-primary">ENROLL</span>
+                        <form action="/addCourse" method="POST">
+                        <input type="text" value=<%= obj.courseId %> hidden name="cid">
+                        <input type="text" value=<%= obj.courseTitle %> hidden name="cname">
+                        <button class="btn btn-primary">ENROLL</button>
+                        </form>
                         <br>
                         <div id="<%= obj.courseId %>" class="collapse">
                         <%= obj.aboutCourse %>
