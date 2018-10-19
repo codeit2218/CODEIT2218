@@ -86,6 +86,13 @@ app.get("/quickNotes", function(req, res) {
     else
         res.redirect('./');
 });
+app.get("/references", function(req, res) {
+    if (req.session.uid)
+        res.render("references",{uname: req.session.uid,pageHeading: "REFERENCES"});
+    else
+        res.redirect('./');
+});
+
 
 app.get("/quiz", function(req, res) {
     if (req.session.uid)
