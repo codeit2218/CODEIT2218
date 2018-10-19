@@ -19,8 +19,8 @@
                      <li class="list-group-item"><%= obj.courseName %> <span class="badge"><%= obj.status %></span>
                     <br><br>
                     <div class="progress yellow">
-                        <div class="progress-bar progress-bar-success progress-bar-striped active" style="width:65%;">
-                        <div class="progress-value">65%</div>
+                        <div class="progress-bar progress-bar-success progress-bar-striped active" style="width:<%= obj.perc %>%;">
+                        <div class="progress-value" style="color: black; text-align: center;"><%= obj.perc %></div>
                         </div>
                     </div>
                     <div><center>PRACTICE <span class="glyphicon glyphicon-road"></span></center></div>

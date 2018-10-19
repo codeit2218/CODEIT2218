@@ -48,6 +48,18 @@ app.get("/dashboard", function(req, res) {
                 throw err;
             }
             obj = result;
+            
+            
+             obj[0].courses.forEach(function(obj) {
+            if(obj.status!="done"){
+                var inTime = obj.dateOfEnrollment;
+                var currTime = Math.floor(Date.now()/1000);
+                var diff = Math.floor((currTime-inTime)/(60*60*24));
+                obj.perc = Math.floor(((diff)/7)*100);
+            }
+             });
+            
+            
             db.close();
              res.render('dashboard',{obj: obj,uname: req.session.uid,pageHeading: "DASHBOARD"});
         });
