@@ -55,7 +55,12 @@ app.get("/dashboard", function(req, res) {
                 var inTime = obj.dateOfEnrollment;
                 var currTime = Math.floor(Date.now()/1000);
                 var diff = Math.floor((currTime-inTime)/(60*60*24));
+                obj.week = diff+1;
                 obj.perc = Math.floor(((diff)/7)*100);
+                if(diff>0)
+                    obj.status="RESUME";
+                if(diff>7)
+                    obj.status="ATTEMPT QUIZ";
             }
              });
             
@@ -151,7 +156,7 @@ app.get('/requestQuestion', function(req, res) {
     res.send(t);
 });
 
-app.get("/course", function(req, res) {
+app.post("/course", function(req, res) {
     if (req.session.uid)
     {  
         MongoClient.connect(url, function(err, db) {
@@ -162,7 +167,7 @@ app.get("/course", function(req, res) {
             db.close();
         });
     });
-      res.render("course_template",{uname: req.session.uid,pageHeading: "ALL COURSES"});           
+      res.render("course_template",{uname: req.session.uid,pageHeading: "ALL COURSES",cname: req.body.name, week: req.body.week,status: req.body.status});           
     }
     else
         res.redirect('./');
@@ -268,7 +273,7 @@ app.post('/addCourse',function(req,response){
             courseId: cid,
             courseName: cname,
             dateOfEnrollment: time,
-            status: "START",
+            status: "BEGIN",
             quiz: "no"
         };
     //add to database here and redirect to courses page

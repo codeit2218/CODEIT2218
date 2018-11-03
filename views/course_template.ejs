@@ -1,5 +1,10 @@
 <%- include includes/navbar.ejs %>
-    <h1>A RUN THROUGH JAVA / <span><small>WEEK 2</small></span></h1>
+    
+    
+    <%if(status!="START"){
+    %>
+    
+    <h1><%= cname%> / <span><small>WEEK <%= week%></small></span></h1>
     
     
     
@@ -76,4 +81,7 @@
     </div>
   </div>
 </div>
+<%}else{%>
+    <%- include courseDesc.ejs %>
+    <%}%>
 <%- include includes/footer.ejs %>
